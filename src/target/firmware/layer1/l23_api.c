@@ -100,7 +100,7 @@ static uint32_t chan_nr2mf_task_mask(uint8_t chan_nr, uint8_t neigh_mode)
 	} else if ((cbits & 0x1e) == 0x18) {
 		/* Osmocom specific extension for CBCH */
 		master_task = (cbits & 0x01) ? /* 0b1100T */
-			MF_TASK_SDCCH4_CBCH : MF_TASK_SDCCH8_CBCH;
+			MF_TASK_SDCCH8_CBCH : MF_TASK_SDCCH4_CBCH;
 		multiframe = MF51;
 #if 0
 	} else if (cbits == 0x10) {
