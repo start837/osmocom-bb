@@ -16,6 +16,7 @@ dnl checks for libraries
 PKG_CHECK_MODULES(LIBOSMOCORE, libosmocore)
 PKG_CHECK_MODULES(LIBOSMOCODING, libosmocoding)
 PKG_CHECK_MODULES(LIBOSMOGSM, libosmogsm)
+PKG_CHECK_MODULES(LIBOSMOGPRSRLCMAC, libosmo-gprs-rlcmac)
 
 dnl checks for header files
 AC_HEADER_STDC
@@ -63,6 +64,7 @@ AC_CONFIG_FILES([include/Makefile
 		 include/osmocom/Makefile
 		 include/osmocom/bb/Makefile
 		 include/osmocom/bb/l1sched/Makefile
+		 include/osmocom/bb/l1gprs/Makefile
 		 include/osmocom/bb/trxcon/Makefile
 		 src/Makefile
 		 Makefile])

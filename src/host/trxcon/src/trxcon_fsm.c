@@ -34,6 +34,7 @@
 #include <osmocom/bb/trxcon/l1ctl.h>
 #include <osmocom/bb/l1sched/l1sched.h>
 #include <osmocom/bb/l1sched/logging.h>
+#include <osmocom/bb/l1gprs/l1gprs.h>
 
 #define S(x)	(1 << (x))
 
@@ -518,11 +519,18 @@ static void trxcon_st_packet_data_action(struct osmo_fsm_inst *fi,
 	case TRXCON_EV_RX_DATA_IND:
 	{
 		const struct trxcon_param_rx_data_ind *ind = data;
+		const unsigned int tn = ind->chan_nr & 0x07;
 
-		if (ind->link_id == 0x00)
-			LOGPFSML(fi, LOGL_NOTICE, "Rx PDTCH/D message\n");
+		const struct l1gprs_prim_data_ind grr_ind = {
+			.frame_nr = ind->frame_nr,
+			.data_len = ind->data_len,
+			.data = ind->data,
+		};
+
+		if (ind->link_id == L1SCHED_CH_LID_PTCCH)
+			l1gprs_handle_ptcch_ind(&trxcon->grr->pdch[tn], &grr_ind);
 		else
-			LOGPFSML(fi, LOGL_NOTICE, "Rx PTCCH/D message\n");
+			l1gprs_handle_pdtch_ind(&trxcon->grr->pdch[tn], &grr_ind);
 		break;
 	}
 	case TRXCON_EV_DEDICATED_RELEASE_REQ:
@@ -545,6 +553,10 @@ static void trxcon_fsm_pre_term_cb(struct osmo_fsm_inst *fi,
 	/* Shutdown the scheduler */
 	if (trxcon->sched != NULL)
 		l1sched_free(trxcon->sched);
+	/* Shutdown GPRS RR layer */
+	if (trxcon->grr == NULL)
+		l1gprs_grr_inst_free(trxcon->grr);
+
 	/* Close active connections */
 	if (trxcon->l2if != NULL)
 		trxcon_l1ctl_close(trxcon);

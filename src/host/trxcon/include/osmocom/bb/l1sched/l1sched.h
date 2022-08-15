@@ -324,6 +324,8 @@ struct l1sched_ts {
 	struct llist_head tx_prims;
 	/*! Backpointer to the scheduler */
 	struct l1sched_state *sched;
+	/*! Some private data for API user */
+	void *priv;
 };
 
 /* Represents one TX primitive in the queue of l1sched_ts */

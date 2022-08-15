@@ -4,6 +4,7 @@
 
 struct osmo_fsm_inst;
 struct l1sched_state;
+struct l1gprs_grr_inst;
 struct msgb;
 
 struct trxcon_inst {
@@ -18,6 +19,9 @@ struct trxcon_inst {
 
 	/* The L1 scheduler */
 	struct l1sched_state *sched;
+	/* GPRS RR state (RLC/MAC layer) */
+	struct l1gprs_grr_inst *grr;
+
 	/* PHY interface (e.g. TRXC/TRXD) */
 	void *phyif;
 	/* L2 interface (e.g. L1CTL) */

@@ -27,6 +27,7 @@
 #include <osmocom/bb/trxcon/trxcon_fsm.h>
 #include <osmocom/bb/l1sched/l1sched.h>
 #include <osmocom/bb/l1sched/logging.h>
+#include <osmocom/bb/l1gprs/l1gprs.h>
 
 extern int g_logc_l1c;
 extern int g_logc_l1d;
@@ -87,6 +88,13 @@ struct trxcon_inst *trxcon_inst_alloc(void *ctx, unsigned int id, uint32_t fn_ad
 
 	trxcon->sched = l1sched_alloc(trxcon, &sched_cfg, trxcon);
 	if (trxcon->sched == NULL) {
+		trxcon_inst_free(trxcon);
+		return NULL;
+	}
+
+	/* Init GPRS RR layer */
+	trxcon->grr = l1gprs_grr_inst_alloc(trxcon, trxcon->log_prefix, trxcon);
+	if (trxcon->grr == NULL) {
 		trxcon_inst_free(trxcon);
 		return NULL;
 	}

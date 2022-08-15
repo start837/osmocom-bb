@@ -8,6 +8,7 @@ AM_CFLAGS = \
 	$(LIBOSMOCORE_CFLAGS) \
 	$(LIBOSMOCODING_CFLAGS) \
 	$(LIBOSMOGSM_CFLAGS) \
+	$(LIBOSMOGPRSRLCMAC_CFLAGS) \
 	$(NULL)
 
 
@@ -35,6 +36,19 @@ libl1sched_la_LIBADD = \
 	$(NULL)
 
 
+noinst_LTLIBRARIES += libl1gprs.la
+
+libl1gprs_la_SOURCES = \
+	gprs.c \
+	$(NULL)
+
+libl1gprs_la_LIBADD = \
+	$(LIBOSMOCORE_LIBS) \
+	$(LIBOSMOGSM_LIBS) \
+	$(LIBOSMOGPRSRLCMAC_LIBS) \
+	$(NULL)
+
+
 noinst_LTLIBRARIES += libtrxcon.la
 
 libtrxcon_la_SOURCES = \
@@ -46,6 +60,7 @@ libtrxcon_la_SOURCES = \
 
 libtrxcon_la_LIBADD = \
 	libl1sched.la \
+	libl1gprs.la \
 	$(LIBOSMOCORE_LIBS) \
 	$(LIBOSMOGSM_LIBS) \
 	$(NULL)
