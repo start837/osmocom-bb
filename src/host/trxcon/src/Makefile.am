@@ -66,6 +66,21 @@ libtrxcon_la_LIBADD = \
 	$(NULL)
 
 
+if ENABLE_L1GPRS_TEST
+noinst_PROGRAMS = l1gprs_test
+
+l1gprs_test_SOURCES = \
+	l1ctl_server.c \
+	l1gprs_test.c \
+	logging.c \
+	$(NULL)
+
+l1gprs_test_LDADD = \
+	libl1gprs.la \
+	$(NULL)
+endif
+
+
 bin_PROGRAMS = trxcon
 
 trxcon_SOURCES = \

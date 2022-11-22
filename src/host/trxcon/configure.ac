@@ -24,6 +24,14 @@ AC_HEADER_STDC
 dnl init libtool
 LT_INIT
 
+AC_ARG_WITH(l1gprs_test, [
+	AS_HELP_STRING(
+		[--with-l1gprs-test],
+		[Enable building l1gprs_test binary])
+	])
+
+AM_CONDITIONAL(ENABLE_L1GPRS_TEST, [test "x$with_l1gprs_test" = "xyes"])
+
 AC_ARG_ENABLE(sanitize,
 	[AS_HELP_STRING(
 		[--enable-sanitize],
