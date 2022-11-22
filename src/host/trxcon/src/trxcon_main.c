@@ -279,6 +279,14 @@ static void signal_handler(int signum)
 	}
 }
 
+static const int trxcon_log_cfg[] = {
+	[TRXCON_LOGC_FSM] = DAPP,
+	[TRXCON_LOGC_L1C] = DL1C,
+	[TRXCON_LOGC_L1D] = DL1D,
+	[TRXCON_LOGC_SCHC] = DSCH,
+	[TRXCON_LOGC_SCHD] = DSCHD,
+};
+
 int main(int argc, char **argv)
 {
 	struct l1ctl_server_cfg server_cfg;
@@ -305,6 +313,7 @@ int main(int argc, char **argv)
 
 	/* Init logging system */
 	trxcon_logging_init(tall_trxcon_ctx, app_data.debug_mask);
+	trxcon_set_log_cfg(&trxcon_log_cfg[0], ARRAY_SIZE(trxcon_log_cfg));
 
 	/* Configure pretty logging */
 	log_set_print_extended_timestamp(osmo_stderr_target, 1);
