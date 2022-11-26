@@ -65,7 +65,6 @@ static struct {
 	const char *trx_bind_ip;
 	const char *trx_remote_ip;
 	uint16_t trx_base_port;
-	uint32_t trx_fn_advance;
 
 	/* GSMTAP specific */
 	struct gsmtap_inst *gsmtap;
@@ -76,7 +75,6 @@ static struct {
 	.trx_remote_ip = "127.0.0.1",
 	.trx_bind_ip = "0.0.0.0",
 	.trx_base_port = 6700,
-	.trx_fn_advance = 3,
 };
 
 static void *tall_trxcon_ctx = NULL;
@@ -123,7 +121,7 @@ static void l1ctl_conn_accept_cb(struct l1ctl_client *l1c)
 {
 	struct trxcon_inst *trxcon;
 
-	trxcon = trxcon_inst_alloc(l1c, l1c->id, app_data.trx_fn_advance);
+	trxcon = trxcon_inst_alloc(l1c, l1c->id);
 	if (trxcon == NULL) {
 		l1ctl_client_conn_close(l1c);
 		return;
@@ -178,7 +176,6 @@ static void print_help(void)
 	printf("  -b --trx-bind     TRX bind IP address (default 0.0.0.0)\n");
 	printf("  -i --trx-remote   TRX remote IP address (default 127.0.0.1)\n");
 	printf("  -p --trx-port     Base port of TRX instance (default 6700)\n");
-	printf("  -f --trx-advance  Uplink burst scheduling advance (default 3)\n");
 	printf("  -s --socket       Listening socket for layer23 (default /tmp/osmocom_l2)\n");
 	printf("  -g --gsmtap-ip    The destination IP used for GSMTAP (disabled by default)\n");
 	printf("  -C --max-clients  Maximum number of L1CTL connections (default 1)\n");
@@ -230,7 +227,7 @@ static void handle_options(int argc, char **argv)
 			app_data.trx_base_port = atoi(optarg);
 			break;
 		case 'f':
-			app_data.trx_fn_advance = atoi(optarg);
+			/* XXX: no-op */
 			break;
 		case 's':
 			app_data.bind_socket = optarg;

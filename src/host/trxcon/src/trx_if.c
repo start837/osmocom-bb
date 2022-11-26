@@ -685,10 +685,16 @@ static int trx_data_rx_cb(struct osmo_fd *ofd, unsigned int what)
 		  "RX burst tn=%u fn=%u rssi=%d toa=%d\n",
 		  bi.tn, bi.fn, bi.rssi, bi.toa256);
 
-	if (bi.fn % 51 == 0)
-		trxcon_phyif_handle_clock_ind(trx->priv, bi.fn);
+	trxcon_phyif_handle_burst_ind(trx->priv, &bi);
 
-	return trxcon_phyif_handle_burst_ind(trx->priv, &bi);
+	struct trxcon_phyif_rts_ind rts = {
+		.fn = bi.fn,
+		.tn = bi.tn,
+	};
+
+	trxcon_phyif_handle_rts_ind(trx->priv, &rts);
+
+	return 0;
 }
 
 int trx_if_handle_phyif_burst_req(struct trx_instance *trx,
